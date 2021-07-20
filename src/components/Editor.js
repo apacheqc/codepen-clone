@@ -1,10 +1,18 @@
 import React, { useState } from 'react'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
+import 'codemirror/addon/lint/lint';
+import 'codemirror/addon/lint/json-lint';
+import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/hint/javascript-hint.js'
+import 'codemirror/addon/lint/javascript-lint.js'
 import 'codemirror/mode/css/css'
-import { Controlled as ControlledEditor } from 'react-codemirror2';
+import { Controlled as ControlledEditor } from 'react-codemirror2'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCompressAlt, faExpandAlt } from '@fortawesome/free-solid-svg-icons'
+
 
 const Editor = (props) => {
   const {
@@ -24,14 +32,20 @@ const Editor = (props) => {
       <div className="editor-title">
     {displayName}
     <button
+    type='button'
+    className="expand-collapse-btn"
     onClick={() => setOpen(prevOpen => !prevOpen)}
-    >0/C</button>
+    >
+    <FontAwesomeIcon icon={open ? faCompressAlt : faExpandAlt }
+    />
+    </button>
       </div>
-    <ControlledEditor
-      onBeforeChange={handleChange}
+      <ControlledEditor
+        onBeforeChange={handleChange}
         value={value}
         className="code-mirror-wrapper"
         options={{
+          gutters: ["CodeMirror-lint-markers"],
           lineWrapping: true,
           lint: true,
           mode: language,
